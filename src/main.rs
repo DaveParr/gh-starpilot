@@ -20,3 +20,20 @@ fn main() {
         println!("Hi {}!", args.name);
     }
 }
+
+#[cfg(test)]
+// test main with dave input
+mod tests {
+    use assert_cmd::Command;
+    use predicates::str::contains;
+
+    #[test]
+    fn test_main() {
+        let mut cmd = Command::cargo_bin("gh-starpilot").unwrap();
+        cmd.arg("--name").arg("Dave").arg("--count").arg("3");
+
+        cmd.assert()
+            .success()
+            .stdout(contains("Hi Dave!\nHi Dave!\nHi Dave!\n"));
+    }
+}
